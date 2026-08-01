@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farhan Musfique Prantik — Flutter Developer</title>
+<meta name="description" content="Portfolio of Farhan Musfique Prantik, Flutter developer and CSE student at AIUB.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F6F3;
+    --paper-dim:#EFEDE7;
+    --ink:#191714;
+    --slate:#6B6862;
+    --hairline:#DDD9D1;
+    /* Accent shifted to teal so this reads as its own identity, not a re-skin */
+    --accent:#0F766E;
+    --accent-dim:#E7F3F1;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--accent); color:var(--paper); }
+
+  a{ color:var(--accent); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    display:grid;
+    grid-template-columns: 200px minmax(0,1fr);
+    gap:48px;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- Nav rail (desktop) ---------- */
+  .rail{
+    position:sticky;
+    top:0;
+    align-self:start;
+    padding-top:96px;
+    height:100vh;
+  }
+  .rail-inner{ position:sticky; top:64px; }
+  .rail .name{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:-0.02em;
+    margin-bottom:4px;
+  }
+  .rail .role{
+    font-size:13px;
+    color:var(--slate);
+    margin-bottom:28px;
+  }
+  .rail nav{ display:flex; flex-direction:column; gap:2px; }
+  .rail nav a{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--slate);
+    padding:6px 0;
+    display:flex;
+    gap:10px;
+    text-decoration:none;
+    border-left:2px solid transparent;
+    padding-left:12px;
+    margin-left:-13px;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .rail nav a:hover{ color:var(--ink); }
+  .rail nav a.active{
+    color:var(--accent);
+    border-left-color:var(--accent);
+  }
+  .rail nav a .n{ color:var(--hairline); }
+  .rail nav a.active .n{ color:var(--accent); }
+
+  .rail .socials{
+    margin-top:32px;
+    display:flex;
+    gap:14px;
+    font-family:var(--mono);
+    font-size:12px;
+  }
+
+  /* ---------- Mobile top nav ---------- */
+  .mobile-nav{
+    display:none;
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(247,246,243,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--hairline);
+    padding:14px 20px;
+    overflow-x:auto;
+    white-space:nowrap;
+    font-family:var(--mono);
+    font-size:12px;
+  }
+  .mobile-nav a{
+    color:var(--slate);
+    margin-right:18px;
+  }
+  .mobile-nav a.active{ color:var(--accent); }
+
+  /* ---------- Main content ---------- */
+  main{ min-width:0; padding-bottom:120px; }
+
+  section{
+    padding:88px 0 0 0;
+    scroll-margin-top:24px;
+  }
+  section:first-of-type{ padding-top:96px; }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin:0 0 14px 0;
+  }
+
+  h1{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:clamp(34px, 5vw, 52px);
+    line-height:1.08;
+    letter-spacing:-0.02em;
+    margin:0 0 18px 0;
+  }
+  h1 .accent{ color:var(--accent); }
+
+  h2{
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:26px;
+    letter-spacing:-0.01em;
+    margin:0 0 28px 0;
+  }
+
+  .lede{
+    font-size:18px;
+    color:var(--slate);
+    max-width:56ch;
+    margin:0 0 40px 0;
+  }
+
+  .body-text{
+    max-width:64ch;
+    font-size:16px;
+    color:#3a382f;
+  }
+  .body-text p + p{ margin-top:16px; }
+
+  hr.rule{
+    border:none;
+    border-top:1px solid var(--hairline);
+    margin:88px 0 0 0;
+  }
+
+  /* ---------- Photo ---------- */
+  .photo-slot{
+    width:112px;
+    height:112px;
+    border-radius:50%;
+    border:1px solid var(--hairline);
+    background:var(--paper-dim);
+    object-fit:cover;
+    display:block;
+    margin-bottom:32px;
+  }
+  .photo-slot.img-missing{
+    border-style:dashed;
+    color:var(--slate);
+    font-family:var(--mono);
+    font-size:10px;
+    text-align:center;
+    line-height:1.4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:8px;
+  }
+
+  /* ---------- Video slot ---------- */
+  .video-slot{
+    margin-top:44px;
+    border:1px solid var(--hairline);
+    background:var(--paper-dim);
+    border-radius:6px;
+    aspect-ratio:16/9;
+    max-width:640px;
+    overflow:hidden;
+  }
+  .video-slot iframe{
+    width:100%;
+    height:100%;
+    border:none;
+    display:block;
+  }
+
+  /* ---------- Comment / TODO hints ---------- */
+  .fillnote{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--accent);
+    background:var(--accent-dim);
+    border:1px solid #BFE2DE;
+    border-radius:4px;
+    padding:3px 8px;
+    margin-top:10px;
+  }
+  .fillnote::before{ content:"// "; opacity:0.6; }
+
+  /* ---------- Tag pills (skills) ---------- */
+  .taglist{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:6px;
+  }
+  .tag{
+    font-family:var(--mono);
+    font-size:13px;
+    padding:7px 13px;
+    border:1px solid var(--hairline);
+    border-radius:5px;
+    color:var(--ink);
+    background:#fff;
+  }
+
+  .skill-group{ margin-bottom:32px; }
+  .skill-group h3{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--slate);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-weight:500;
+    margin:0 0 12px 0;
+  }
+
+  /* ---------- Cards: education / experience ---------- */
+  .card{
+    border:1px solid var(--hairline);
+    background:#fff;
+    border-radius:8px;
+    padding:26px 28px;
+    margin-bottom:18px;
+  }
+  .card .institute{
+    font-weight:700;
+    font-size:17px;
+    margin:0 0 4px 0;
+  }
+  .card .meta{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--slate);
+  }
+  .card .degree{
+    color:#3a382f;
+    margin-top:8px;
+  }
+
+  ul.plain{
+    list-style:none;
+    margin:0; padding:0;
+  }
+  ul.plain li{
+    position:relative;
+    padding-left:22px;
+    margin-bottom:14px;
+    color:#3a382f;
+  }
+  ul.plain li::before{
+    content:"›";
+    position:absolute;
+    left:0;
+    color:var(--accent);
+    font-family:var(--mono);
+    font-weight:700;
+  }
+
+  /* ---------- Education cards: photo beside text ---------- */
+  .edu-card{
+    display:flex;
+    gap:22px;
+    align-items:center;
+    border:1px solid var(--hairline);
+    background:#fff;
+    border-radius:8px;
+    padding:22px 26px;
+    margin-bottom:18px;
+  }
+  .edu-photo{
+    width:88px;
+    height:88px;
+    border-radius:6px;
+    object-fit:cover;
+    flex-shrink:0;
+    background:var(--paper-dim);
+    border:1px solid var(--hairline);
+  }
+  .edu-photo.img-missing-block{
+    border-style:dashed;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--slate);
+    font-family:var(--mono);
+    font-size:9px;
+    text-align:center;
+    line-height:1.3;
+    padding:6px;
+  }
+  .edu-text{ min-width:0; }
+  .edu-text .institute{
+    font-weight:700;
+    font-size:17px;
+    margin:0 0 4px 0;
+  }
+  .edu-text .meta{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--slate);
+    margin:0 0 6px 0;
+  }
+  .edu-text .degree{
+    color:#3a382f;
+    margin:0;
+    font-size:15px;
+  }
+
+  @media (max-width: 520px){
+    .edu-card{ flex-direction:column; align-items:flex-start; }
+    .edu-photo{ width:100%; height:140px; }
+  }
+
+  /* ---------- Projects (placeholder cards) ---------- */
+  .project{
+    border:1px dashed var(--hairline);
+    background:#fff;
+    border-radius:8px;
+    overflow:hidden;
+    margin-bottom:28px;
+  }
+  .project-img{
+    width:100%;
+    aspect-ratio:16/9;
+    background:var(--paper-dim);
+    border-bottom:1px dashed var(--hairline);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    gap:6px;
+    color:var(--slate);
+    font-family:var(--mono);
+    font-size:12px;
+    text-align:center;
+    padding:20px;
+  }
+  .project-body{ padding:24px 26px 26px; }
+  .project-title{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .project-title .prompt{ color:var(--accent); }
+  .project-tags{ margin-bottom:14px; }
+  .project-desc{ color:var(--slate); font-size:15px; margin-bottom:16px; }
+  .project-link{
+    font-family:var(--mono);
+    font-size:13px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  /* ---------- CV section ---------- */
+  .cv-box{
+    border:1px solid var(--hairline);
+    background:#fff;
+    border-radius:8px;
+    padding:32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .cv-box .label{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--slate);
+  }
+  .btn{
+    font-family:var(--mono);
+    font-size:13px;
+    font-weight:500;
+    background:var(--ink);
+    color:var(--paper);
+    padding:12px 22px;
+    border-radius:5px;
+    display:inline-block;
+    text-decoration:none;
+  }
+  .btn:hover{ background:var(--accent); text-decoration:none; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--hairline);
+    padding:56px 0 64px;
+  }
+  footer .eyebrow{ margin-bottom:18px; }
+  .contact-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px,1fr));
+    gap:24px;
+    margin-bottom:28px;
+  }
+  .contact-item .k{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--slate);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:6px;
+  }
+  .contact-item .v{ font-size:15px; }
+  footer .fineprint{
+    font-family:var(--mono);
+    font-size:11.5px;
+    color:var(--slate);
+    padding-top:24px;
+    border-top:1px solid var(--hairline);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px){
+    .wrap{ grid-template-columns:1fr; padding:0 20px; gap:0; }
+    .rail{ display:none; }
+    .mobile-nav{ display:block; margin:0 -20px 0; padding-left:20px; padding-right:20px; }
+    section{ padding-top:56px; }
+    section:first-of-type{ padding-top:40px; }
+    hr.rule{ margin:56px 0 0; }
+    .cv-box{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="#home">home</a>
+  <a href="#about">about</a>
+  <a href="#education">education</a>
+  <a href="#skills">skills</a>
+  <a href="#experience">experience</a>
+  <a href="#projects">projects</a>
+  <a href="#certifications">certifications</a>
+  <a href="#cv">cv</a>
+</nav>
+
+<div class="wrap">
+
+  <aside class="rail">
+    <div class="rail-inner">
+      <div class="name">Prantik</div>
+      <div class="role">Flutter Developer</div>
+      <nav id="deskNav">
+        <a href="#home"><span class="n">01</span> Home</a>
+        <a href="#about"><span class="n">02</span> About</a>
+        <a href="#education"><span class="n">03</span> Education</a>
+        <a href="#skills"><span class="n">04</span> Skills</a>
+        <a href="#experience"><span class="n">05</span> Experience</a>
+        <a href="#projects"><span class="n">06</span> Projects</a>
+        <a href="#certifications"><span class="n">07</span> Certifications</a>
+        <a href="#cv"><span class="n">08</span> CV</a>
+      </nav>
+      <div class="socials">
+        <a href="https://github.com/Musfique07" target="_blank" rel="noopener">GitHub</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+
+    <!-- ============ HOME ============ -->
+    <section id="home">
+    
+      <img class="photo-slot" src="img.jpeg" alt="Farhan Musfique Prantik"
+           onerror="this.onerror=null; this.src=''; this.alt='// add img.jpeg'; this.classList.add('img-missing');">
+
+      <p class="eyebrow">Portfolio</p>
+      <h1>Hi, I'm Prantik —<br>a <span class="accent">Flutter developer.</span></h1>
+      <p class="lede">
+        CSE student at AIUB, building cross-platform mobile applications with Flutter.
+      </p>
+      <div class="body-text">
+        <p>
+          I'm Farhan Musfique Prantik, a Computer Science and Engineering student at AIUB with strong practical exposure to Flutter and cross-platform mobile app development. I focus on UI development, REST API integration, and clean software engineering practices to build scalable, user-friendly applications.
+        </p>
+        <p>
+          Alongside development, I've been active in public speaking and debate — leadership roles that shaped how I communicate, collaborate, and lead teams, skills I now bring into technical project work.
+        </p>
+      </div>
+<div class="video-slot">
+  <iframe
+    src="https://www.youtube.com/embed/ekuFW7l8nMU"
+    title="Introduction Video"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about">
+      <p class="eyebrow">02 / About</p>
+      <h2>About Me</h2>
+      <div class="body-text">
+        <p>
+          <strong>Career Interests:</strong> Flutter and cross-platform mobile development, REST API integration, and backend connectivity through Firebase and MySQL.
+        </p>
+        <p>
+          <strong>Professional Strengths:</strong> Clean coding practices, strong grasp of OOP principles and application architecture, debugging and testing discipline, and version control with Git for collaborative work.
+        </p>
+        <p>
+          <strong>Career Objective:</strong> Eager to apply my skills in UI development and clean software engineering practices to build scalable, user-friendly applications, while continuing to grow as a developer.
+        </p>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ============ EDUCATION ============ -->
+    <section id="education">
+      <p class="eyebrow">03 / Education</p>
+      <h2>Education Qualifications</h2>
+
+      <!--
+        Photos wired to real uploaded files: aiub.jpg, college.jpeg, school.jpeg
+        Replace files in the same folder to swap photos later.
+      -->
+
+      <!-- University -->
+      <div class="edu-card">
+        <img class="edu-photo" src="aiub.jpg" alt="AIUB"
+             onerror="this.onerror=null; this.src=''; this.alt='// add aiub.jpg'; this.classList.add('img-missing-block');">
+        <div class="edu-text">
+          <p class="institute">American International University-Bangladesh (AIUB)</p>
+          <p class="meta">2025 – Present · CGPA: 3.50 / 4.00</p>
+          <p class="degree">Bachelor of Science (B.Sc.) in Computer Science and Engineering</p>
+        </div>
+      </div>
+
+      <!-- College (HSC) -->
+      <div class="edu-card">
+        <img class="edu-photo" src="college.jpeg" alt="Ananda Mohan College"
+             onerror="this.onerror=null; this.src=''; this.alt='// add college.jpeg'; this.classList.add('img-missing-block');">
+        <div class="edu-text">
+          <p class="institute">Ananda Mohan College</p>
+          <p class="meta">Passing Year: 2022 · GPA: 5.00</p>
+          <p class="degree">Higher Secondary Certificate (HSC)</p>
+        </div>
+      </div>
+
+      <!-- School (SSC) -->
+      <div class="edu-card">
+        <img class="edu-photo" src="school.jpeg" alt="Mymensingh Zilla School"
+             onerror="this.onerror=null; this.src=''; this.alt='// add school.jpeg'; this.classList.add('img-missing-block');">
+        <div class="edu-text">
+          <p class="institute">Mymensingh Zilla School</p>
+          <p class="meta">Passing Year: 2020 · GPA: 5.00</p>
+          <p class="degree">Secondary School Certificate (SSC)</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ============ SKILLS ============ -->
+    <section id="skills">
+      <p class="eyebrow">04 / Skills</p>
+      <h2>Technical Skills</h2>
+
+      <div class="skill-group">
+        <h3>Mobile &amp; Frameworks</h3>
+        <div class="taglist">
+          <span class="tag">Flutter</span>
+          <span class="tag">Flutter UI Development</span>
+          <span class="tag">Cross-platform (Android/iOS)</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Backend &amp; Data</h3>
+        <div class="taglist">
+          <span class="tag">RESTful API Integration</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">Firebase</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Engineering Practices</h3>
+        <div class="taglist">
+          <span class="tag">OOP</span>
+          <span class="tag">Application Architecture</span>
+          <span class="tag">Git</span>
+          <span class="tag">Testing &amp; Debugging</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Soft Skills</h3>
+        <div class="taglist">
+          <span class="tag">Public Speaking</span>
+          <span class="tag">Leadership</span>
+          <span class="tag">Team Collaboration</span>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <h3>Languages</h3>
+        <div class="taglist">
+          <span class="tag">Bangla (Native)</span>
+          <span class="tag">English (Professional)</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ============ EXPERIENCE ============ -->
+    <section id="experience">
+      <p class="eyebrow">05 / Experience</p>
+      <h2>Experience &amp; Leadership</h2>
+
+      <div class="card">
+        <p class="institute">Senior Executive</p>
+        <p class="meta">AIUB Oratory Club</p>
+      </div>
+
+      <div class="card">
+        <p class="institute">President</p>
+        <p class="meta">Mymensingh Zilla School Debating Society</p>
+      </div>
+
+      <div class="card">
+        <p class="institute">Assistant Zonal Chief</p>
+        <p class="meta">International Youth Olympiad</p>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ============ PROJECTS ============ -->
+      <hr class="rule">
+
+    <!-- ============ PROJECTS ============ -->
+    <section id="projects">
+      <p class="eyebrow">07 / Projects</p>
+      <h2>Projects</h2>
+
+      <div class="project">
+        <img class="project-img" src="inventory.png" alt="Inventory Management System screenshot"
+             onerror="this.onerror=null; this.src=''; this.alt='// screenshot not found — add inventory-screenshot.png'; this.classList.add('img-missing-block');">
+        <div class="project-body">
+          <div class="project-title"><span class="prompt">$</span> Inventory-Management-System</div>
+          <div class="project-tags taglist">
+            <span class="tag">Laravel</span>
+            <span class="tag">PHP</span>
+            <span class="tag">MySQL</span>
+          </div>
+          <p class="project-desc">A modular system for tracking stock, products, and business inventory operations.</p>
+          <a class="project-link" href="https://github.com/Musfique07/Inventory-management-system" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+      </div>
+
+      <div class="project">
+        <img class="project-img" src="banking.png" alt="Bank Simulator screenshot"
+             onerror="this.onerror=null; this.src=''; this.alt='// screenshot not found — add bank-simulator-screenshot.png'; this.classList.add('img-missing-block');">
+        <div class="project-body">
+          <div class="project-title"><span class="prompt">$</span> Bank_Simulator</div>
+          <div class="project-tags taglist">
+            <span class="tag">Python</span>
+          </div>
+          <p class="project-desc">A banking simulation system with multi-module architecture, custom exception handling, and transaction management.</p>
+          <a class="project-link" href="https://github.com/Musfique07/Bank-Simulator-" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <hr class="rule">
+    <!-- ============ CERTIFICATIONS ============ -->
+    <section id="certifications">
+      <p class="eyebrow">07 / Certifications &amp; Achievements</p>
+      <h2>Certifications &amp; Achievements</h2>
+
+      <div class="skill-group">
+        <h3>Certifications</h3>
+        <ul class="plain">
+          <li>Cisco IT Essentials</li>
+          <li>Cisco Network Security</li>
+        </ul>
+      </div>
+
+      <div class="skill-group">
+        <h3>Achievements &amp; Awards</h3>
+        <ul class="plain">
+          <li>Best Organizer — AOC Nationals</li>
+          <li>Champion — Creation 2.0 Public Speaking Competition</li>
+          <li>National Winner — Pushti Prothom Alo Debate Champions</li>
+          <li>1st Prize — National Recitation Competition</li>
+          <li>Best Debater Award (2023)</li>
+        </ul>
+      </div>
+    </section>
+
+    <hr class="rule">
+
+    <!-- ============ CV ============ -->
+    <section id="cv">
+      <p class="eyebrow">08 / Resume</p>
+      <h2>CV</h2>
+      <div class="cv-box">
+        <!--
+          Place the CV PDF file in this same folder and update the
+          filename below if it differs from Farhan_Musfique_Prantik_CV.pdf
+        -->
+        <span class="label">Farhan_Musfique_Prantik_CV.pdf</span>
+        <a class="btn" href="Farhan_Musfique_Prantik_CV.pdf" download>Download CV (PDF)</a>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ FOOTER / CONTACT ============ -->
+<footer id="contact">
+  <div class="wrap" style="display:block;">
+    <p class="eyebrow">Contact</p>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="k">Email</div>
+        <div class="v"><a href="mailto:farhanmusfiqe02@gmail.com">farhanmusfiqe02@gmail.com</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="k">GitHub</div>
+        <div class="v"><a href="https://github.com/Musfique07" target="_blank" rel="noopener">github.com/Musfique07</a></div>
+      </div>
+      <div class="contact-item">
+        <div class="k">Location</div>
+        <div class="v">Dhaka, Bangladesh</div>
+      </div>
+      <div class="contact-item">
+        <div class="k">LinkedIn</div>
+        <div class="v fillnote" style="display:inline-block;">add LinkedIn URL here</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Active-link highlighting on scroll
+  const sections = document.querySelectorAll('section, footer#contact');
+  const deskLinks = document.querySelectorAll('#deskNav a');
+  const mobLinks = document.querySelectorAll('#mobileNav a');
+
+  const setActive = (id) => {
+    [...deskLinks, ...mobLinks].forEach(a=>{
+      a.classList.toggle('active', a.getAttribute('href') === '#'+id);
+    });
+  };
+
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        setActive(entry.target.id);
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+  sections.forEach(s => { if(s.id) observer.observe(s); });
+</script>
+
+</body>
+</html>
